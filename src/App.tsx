@@ -1,16 +1,32 @@
 import './App.css';
-import { useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import welcome from './services/welcome';
-import Card from './components/Card';
-import Header from './components/Header/Header';
+
+import Layout from './components/Layout';
+
+import { AppContextProvider } from './components/AppContext';
+import MainRoutes from './components/pages/routes';
+import {
+  changeLocalStorage,
+  createLocalStorage,
+  getAllLocalStorage,
+} from './services/storage';
 
 function App() {
+  
+  !getAllLocalStorage() && createLocalStorage();
+
+  changeLocalStorage({ login: true });
   return (
-    <ChakraProvider>
-      <Header />
-      <Card />
-    </ChakraProvider>
+    <BrowserRouter>
+      <AppContextProvider>
+        <ChakraProvider>
+          <Layout>
+            <MainRoutes />
+          </Layout>
+        </ChakraProvider>
+      </AppContextProvider>
+    </BrowserRouter>
   );
 }
 
